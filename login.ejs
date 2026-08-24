@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>管理员登录</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.box{background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.08);padding:32px;width:360px}
+.box h2{margin-bottom:6px}.box p{color:#888;font-size:13px;margin-bottom:18px}
+.form-group{margin-bottom:13px}label{display:block;font-size:13px;margin-bottom:4px;color:#555}
+input{width:100%;padding:10px 12px;border:1px solid #dcdcdc;border-radius:8px;font-size:14px}
+.btn{width:100%;padding:10px;border:0;border-radius:8px;background:#001529;color:#fff;font-size:15px;cursor:pointer}
+.alert{background:#fff3cd;color:#856404;padding:9px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
+</style></head>
+<body>
+<div class="box">
+  <h2>管理员登录</h2>
+  <p>默认账号 admin / admin123（首次登录后请修改）</p>
+  <% if (err){ %><div class="alert"><%= err %></div><% } %>
+  <form method="POST" action="/admin/login">
+    <div class="form-group"><label>管理员账号</label><input name="username" required value="admin"></div>
+    <div class="form-group"><label>密码</label><input name="password" type="password" required></div>
+    <button class="btn">登录</button>
+  </form>
+</div>
+</body></html>

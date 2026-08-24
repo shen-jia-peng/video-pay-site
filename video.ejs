@@ -1,0 +1,62 @@
+<%
+  const v = video;
+  const cover = v.cover || 'https://placehold.co/800x450/eeeeee/999999?text=Video';
+  const qr = settings.wechatQr || '/wechat-qr.png';
+%>
+<div style="max-width:760px;margin:0 auto">
+  <a href="/" style="font-size:13px">← 返回首页</a>
+  <h2 style="margin:14px 0 6px"><%= v.title %></h2>
+  <p style="color:#777;font-size:14px;margin-bottom:16px"><%= v.desc || '' %></p>
+
+  <div style="position:relative">
+    <% if (paid) { %>
+      <video controls preload="metadata" src="/api/video/<%= v.id %>/stream"></video>
+    <% } else { %>
+      <div class="locked" style="height:420px;background:url('<%= cover %>') center/cover;border-radius:10px"></div>
+      <div style="text-align:center;margin-top:16px">
+        <div style="font-size:22px;font-weight:700;color:#e53935">¥ <%= (v.price||0).toFixed(2) %></div>
+        <p style="margin:8px 0 14px;color:#666">付费后即可 unlimited 观看本视频</p>
+        <% if (!user) { %>
+          <a class="btn btn-success" href="/login">登录后购买</a>
+        <% } else { %>
+          <button class="btn btn-success" onclick="openPay()">立即支付 ¥<%= (v.price||0).toFixed(2) %></button>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<% if (user && !paid) { %>
+<div id="payModal" style="display:none" class="modal-mask">
+  <div class="modal">
+    <h3>扫码支付</h3>
+    <p class="tip">请使用微信扫码支付 <b>¥ <%= (v.price||0).toFixed(2) %></b>，支付完成后点击"我已支付"</p>
+    <img src="<%= qr %>" alt="微信收款码">
+    <img src="<%= qr %>" style="display:none" id="qrDebug">
+    <div style="display:flex;gap:10px">
+      <button class="btn" style="flex:1;background:#ccc;color:#333" onclick="closePay()">取消</button>
+      <button class="btn btn-success" style="flex:1" onclick="confirmPaid()">我已支付</button>
+    </div>
+    <p class="tip" style="margin-top:12px;font-size:12px">提示：此为个人收款码演示，支付后由管理员在后台核实并开通。</p>
+  </div>
+</div>
+
+<script>
+  let orderId = null;
+  async function openPay(){
+    const r = await fetch('/api/order/<%= v.id %>', { method:'POST' });
+    const j = await r.json();
+    if (!j.ok && !j.alreadyPaid) { alert(j.msg||'下单失败'); return; }
+    orderId = j.orderId || null;
+    document.getElementById('payModal').style.display='flex';
+  }
+  function closePay(){ document.getElementById('payModal').style.display='none'; }
+  async function confirmPaid(){
+    if (!orderId) { alert('订单不存在'); return; }
+    const r = await fetch('/api/order/'+orderId+'/confirm-paid', { method:'POST' });
+    const j = await r.json();
+    if (j.ok) { alert('已提交，等待管理员核实开通（个人收款码需人工确认）'); closePay(); location.reload(); }
+    else alert(j.msg||'操作失败');
+  }
+</script>
+<% } %>

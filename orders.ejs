@@ -1,0 +1,24 @@
+<% active='orders'; %>
+<div class="card">
+  <h3>订单管理</h3>
+  <p style="font-size:12px;color:#888;margin-bottom:12px">收到观众微信转账后，将对应订单标记为"已支付"，观众即可观看。</p>
+  <table>
+    <tr><th>时间</th><th>用户</th><th>视频</th><th>金额</th><th>状态</th><th>操作</th></tr>
+    <% orders.forEach(function(o){ %>
+      <tr>
+        <td><%= new Date(o.createdAt).toLocaleString() %></td>
+        <td><%= o.user? o.user.username : o.userId %></td>
+        <td><%= o.video? o.video.title : o.videoId %></td>
+        <td>¥ <%= (o.amount||0).toFixed(2) %></td>
+        <td><span class="badge <%= o.status==='paid'?'badge-paid':'badge-pending' %>"><%= o.status==='paid'?'已支付':'待支付' %></span></td>
+        <td>
+          <% if (o.status!=='paid'){ %>
+            <form method="POST" action="/admin/orders/<%= o.id %>/mark-paid" style="display:inline">
+              <button class="btn btn-sm btn-success">标记已支付</button>
+            </form>
+          <% } else { %}<span style="color:#07c160;font-size:12px">已开通</span><% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </table>
+</div>

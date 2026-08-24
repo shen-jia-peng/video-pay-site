@@ -1,0 +1,24 @@
+<% active='settings'; %>
+<div class="card">
+  <h3>站点设置</h3>
+  <form method="POST" action="/admin/settings" enctype="multipart/form-data">
+    <div class="form-group"><label>站点名称</label><input name="siteName" value="<%= settings.siteName %>"></div>
+    <div class="form-group"><label>默认视频价格 (元)</label><input name="price" type="number" step="0.01" value="<%= settings.price %>"></div>
+    <div class="form-group">
+      <label>微信收款码（上传新图替换）</label><br>
+      <% if (settings.wechatQr){ %><img class="qrprev" src="<%= settings.wechatQr %>" style="margin-bottom:8px"><% } %>
+      <input name="qrFile" type="file" accept="image/*">
+    </div>
+    <button class="btn">保存设置</button>
+  </form>
+</div>
+<div class="card">
+  <h3>修改管理员密码</h3>
+  <form method="POST" action="/admin/change-password">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group"><label>原密码</label><input name="oldPwd" type="password" required></div>
+      <div class="form-group"><label>新密码</label><input name="newPwd" type="password" required></div>
+    </div>
+    <button class="btn">修改密码</button>
+  </form>
+</div>
