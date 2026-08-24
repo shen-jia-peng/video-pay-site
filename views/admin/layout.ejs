@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= (typeof title!=='undefined'?title+' - ':'') %>管理后台</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f0f2f5;color:#222}
+    a{color:#2e7dff;text-decoration:none}a:hover{text-decoration:underline}
+    .topbar{background:#001529;color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .topbar .brand{font-weight:700;font-size:18px}
+    .topbar a{color:#cfd8dc;margin-left:16px;font-size:14px}
+    .wrap{display:flex;max-width:1200px;margin:24px auto;padding:0 20px;gap:20px}
+    .sidebar{width:180px;background:#fff;border-radius:10px;padding:14px;height:fit-content;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .sidebar a{display:block;padding:9px 12px;border-radius:7px;color:#333;margin-bottom:4px;font-size:14px}
+    .sidebar a:hover,.sidebar a.active{background:#e6f0ff;color:#2e7dff;text-decoration:none}
+    .main{flex:1;min-width:0}
+    .card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.04);padding:20px;margin-bottom:20px}
+    .card h3{margin-bottom:14px;font-size:17px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #f0f0f0}
+    th{background:#fafafa;font-weight:600;color:#555}
+    .btn{padding:7px 14px;border:0;border-radius:7px;cursor:pointer;font-size:13px;background:#2e7dff;color:#fff}
+    .btn:hover{background:#1c63d6}.btn-sm{padding:5px 10px;font-size:12px}
+    .btn-success{background:#07c160}.btn-success:hover{background:#06ad56}
+    .btn-danger{background:#e53935}.btn-danger:hover{background:#c62828}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+    .stat{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .stat .n{font-size:26px;font-weight:700}.stat .l{font-size:13px;color:#888;margin-top:4px}
+    .form-group{margin-bottom:12px}label{display:block;font-size:13px;margin-bottom:4px;color:#555}
+    input[type=text],input[type=number],input[type=password],input[type=file],textarea{width:100%;padding:8px 11px;border:1px solid #dcdcdc;border-radius:8px;font-size:14px}
+    .alert{background:#fff3cd;color:#856404;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:13px}
+    .badge{padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+    .badge-paid{background:#e6f7ec;color:#07c160}.badge-pending{background:#fff7e6;color:#e6a817}
+    img.qrprev{width:140px;height:140px;object-fit:contain;border:1px solid #eee;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">⚙️ <%= (settings&&settings.siteName)||'付费视频' %> · 管理后台</span>
+    <div>
+      <a href="/">前台首页</a>
+      <a href="/admin/settings">站点设置</a>
+      <a href="/logout">退出</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <aside class="sidebar">
+      <a href="/admin" class="<%= typeof active==='undefined'||active==='dashboard'?'active':'' %>">仪表盘</a>
+      <a href="/admin/videos" class="<%= active==='videos'?'active':'' %>">视频管理</a>
+      <a href="/admin/orders" class="<%= active==='orders'?'active':'' %>">订单管理</a>
+      <a href="/admin/settings" class="<%= active==='settings'?'active':'' %>">站点设置</a>
+    </aside>
+    <main class="main">
+      <% if (typeof err!=='undefined'&&err){ %><div class="alert"><%= err %></div><% } %>
+      <%- body %>
+    </main>
+  </div>
+</body>
+</html>
