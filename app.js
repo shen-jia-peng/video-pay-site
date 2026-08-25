@@ -15,7 +15,6 @@ const PORT = process.env.PORT || 3000;
 
 // 👇 从这里开始是你即将粘贴的新代码 👇
 const fs = require('fs');
-const path = require('path');
 
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
 
