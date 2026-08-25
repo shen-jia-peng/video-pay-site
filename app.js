@@ -13,6 +13,17 @@ data.init();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// 👇 从这里开始是你即将粘贴的新代码 👇
+const fs = require('fs');
+const path = require('path');
+
+const uploadsDir = path.join(__dirname, 'public', 'uploads');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+// 👆 新代码粘贴到这里结束 👆
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
